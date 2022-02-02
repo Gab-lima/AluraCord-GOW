@@ -1,5 +1,7 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import appConfig from '../config.json'
+import { useRouter } from 'next/router'
+import React from 'react'
 
 function GlobalStyle() {
     return (
@@ -47,11 +49,14 @@ function Titulo(props) {
 
 
  export default function PaginaInicial() {
-  const username = 'Gab-lima';
+   const [username, setUsername] = React.useState('Gab-lima');
+   const roteamento = useRouter();
+ 
 
   return (
     <>
       <GlobalStyle />
+      
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -78,6 +83,14 @@ function Titulo(props) {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function(infosDoEvento) {
+              infosDoEvento.preventDefault(); 
+              roteamento.push('/chat')
+
+             // window.location.href = '/chat '
+            }
+
+            }
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -88,17 +101,18 @@ function Titulo(props) {
               {appConfig.name}
             </Text>
 
-            <TextField
-              fullWidth
-              textFieldColors={{
-                neutral: {
-                  textColor: appConfig.theme.colors.neutrals[200],
-                  mainColor: appConfig.theme.colors.neutrals[900],
-                  mainColorHighlight: appConfig.theme.colors.primary[500],
-                  backgroundColor: appConfig.theme.colors.neutrals[100],
-                },
-              }}
-            />
+            <input
+            type="text"
+            value={username}
+            onChange={function (event) {
+              console.log('user gifitou', event.target.value);
+              const valor = event.target.value; 
+              setUsername(valor); 
+            }}
+            >
+            </input>
+
+             */
             <Button
               type='submit'
               label='Entrar'
